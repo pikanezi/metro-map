@@ -1,0 +1,27 @@
+{
+  "name": "metro-map",
+  "description": "An interactive metro map.",
+  "main": "gulpfile.js",
+  "authors": [
+    "Vincent Neel"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "metro",
+    "map"
+  ],
+  "homepage": "https://github.com/pikanezi/metro-map",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "^3.5.13",
+    "polymer": "^1.2.3",
+    "topojson": "^1.6.20"
+  }
+}

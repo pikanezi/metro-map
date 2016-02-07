@@ -5,7 +5,20 @@
 <dom-module id="metro-map">
     <template>
         <style>
+            .l1 {
+                fill: #F2C931;
+            }
+
+            .l2 {
+                fill: #216EB4;
+            }
+
+            .l3 {
+                fill: #9A9940;
+            }
         </style>
+
+        <svg id="svg"></svg>
     </template>
 
     <script>
@@ -13,7 +26,13 @@
             is: "metro-map",
 
             properties: {
-                container: Object
+                "container": Object
+            },
+
+            mapLinesColor: {
+                "1": "#F2C931",
+                "2": "#216EB4",
+                "3": "#9A9940"
             },
 
             zoomed: function () {
@@ -25,20 +44,19 @@
                 var zoom = d3.behavior.zoom()
                         .on("zoom", this.zoomed.bind(this));
 
-                var svg = d3.select("body").append("svg")
+                var svg = d3.select(this.$["svg"])
                         .attr("width", width)
                         .attr("height", height).call(zoom);
                 this.container = svg.append("g");
 
-                d3.json("lib/data/stations.geojson", function (error, metro) {
+                d3.json("lib/data/dist/lines.json", function (error, metro) {
                     if (error) {
                         return console.warn(error);
                     }
                     var center = d3.geo.centroid(metro);
                     var scale = 150;
                     var offset = [width / 2, height / 2];
-                    var projection = d3.geo.mercator().scale(scale).center(center)
-                            .translate(offset);
+                    var projection = d3.geo.mercator().scale(scale).center(center).translate(offset);
 
                     // create the path
                     var path = d3.geo.path().projection(projection);
@@ -58,7 +76,10 @@
 
                     this.container.selectAll("path").data(metro.features).enter().append("path")
                             .attr("d", path)
-                            .style("fill", "red");
+                            .attr("class", function(d) { return "l" + d.properties.lineName; })
+                            .attr("fill", function(d) {
+                                return this.mapLinesColor[d.properties.lineName];
+                            }.bind(this));
                 }.bind(this));
             }
         });

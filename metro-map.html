@@ -53,31 +53,35 @@
                     if (error) {
                         return console.warn(error);
                     }
-                    var center = d3.geo.centroid(metro);
-                    var scale = 150;
-                    var offset = [width / 2, height / 2];
-                    var projection = d3.geo.mercator().scale(scale).center(center).translate(offset);
-
-                    // create the path
+                    var projection = d3.geo.albers().scale(600).center([48.8534100, 2.3488000]);
                     var path = d3.geo.path().projection(projection);
-
-                    // using the path determine the bounds of the current map and use
-                    // these to determine better values for the scale and translation
-                    var bounds = path.bounds(metro);
-                    var hscale = scale * width / (bounds[1][0] - bounds[0][0]);
-                    var vscale = scale * height / (bounds[1][1] - bounds[0][1]);
-                    scale = (hscale < vscale) ? hscale : vscale;
-                    offset = [width - (bounds[0][0] + bounds[1][0]) / 2,
-                        height - (bounds[0][1] + bounds[1][1]) / 2];
+//                    var center = d3.geo.centroid(metro);
+//                    var scale = 150;
+//                    var offset = [width / 2, height / 2];
+//                    var projection = d3.geo.mercator().scale(scale).center(center).translate(offset);
+//
+//                     create the path
+//                    var path = d3.geo.path().projection(projection);
+//
+//                     using the path determine the bounds of the current map and use
+//                     these to determine better values for the scale and translation
+//                    var bounds = path.bounds(metro);
+//                    var hscale = scale * width / (bounds[1][0] - bounds[0][0]);
+//                    var vscale = scale * height / (bounds[1][1] - bounds[0][1]);
+//                    scale = (hscale < vscale) ? hscale : vscale;
+//                    offset = [width - (bounds[0][0] + bounds[1][0]) / 2,
+//                        height - (bounds[0][1] + bounds[1][1]) / 2];
 
                     // new projection
-                    projection = d3.geo.mercator().center(center).scale(scale).translate(offset);
-                    path = path.projection(projection);
+//                    projection = d3.geo.mercator().center(center).scale(scale).translate(offset);
+//                    path = path.projection(projection);
 
                     this.container.selectAll("path").data(metro.features).enter().append("path")
                             .attr("d", path)
-                            .attr("class", function(d) { return "l" + d.properties.lineName; })
-                            .attr("fill", function(d) {
+                            .attr("class", function (d) {
+                                return "l" + d.properties.lineName;
+                            })
+                            .attr("fill", function (d) {
                                 return this.mapLinesColor[d.properties.lineName];
                             }.bind(this));
                 }.bind(this));
